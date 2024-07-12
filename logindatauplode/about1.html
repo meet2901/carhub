@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-2xl font-semibold text-gray-800">Employees</h2>
+                <p class="mt-2 text-sm text-gray-600">This is a list of employees. You can add new employees, edit, or delete existing ones.</p>
+            </div>
+            <div>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md transition-colors duration-300">
+                    Add New Employee
+                </button>
+            </div>
+        </div>
+        <div class="overflow-hidden border border-gray-200 rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">password</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="userslist" class="bg-white divide-y divide-gray-200"></tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function fetchUsers() {
+            fetch('/users')
+            .then(response => response.json())
+            .then(users => {
+                const userslist = document.getElementById('userslist');
+                userslist.innerHTML = "";
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                    
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full object-cover" src="https://cdn-icons-png.flaticon.com/512/9187/9187999.png" alt="user-avatar">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">${user.username}</div>
+                                    <div class="text-sm text-gray-500">${user.phone}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">${user.phone}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">${user.password}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="text-indigo-600 hover:text-indigo-900 mr-2" onclick="editUser(${user.id})">Edit</button>
+                            <button class="text-red-600 hover:text-red-900" onclick="deleteUser(${user.id})">Delete</button>
+                        </td>
+                    `;
+                    userslist.appendChild(row);
+                });
+            });
+        }
+
+        function deleteUser(userId) {
+       
+            const rowToDelete = document.querySelector(`#userslist tr[data-id="${userId}"]`);
+            if (rowToDelete) {
+                rowToDelete.remove();
+            }
+        }
+
+        function editUser(userId) {
+       
+            console.log(`Edit user with ID ${userId}`);
+        }
+
+        fetchUsers();
+    </script>
+</body>
+</html>
