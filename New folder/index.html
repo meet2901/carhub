@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Card</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Reset some defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.navbar {
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.nav-links {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-links li {
+    margin-right: 20px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: #fdb813;
+}
+
+.logo {
+    font-size: 1.5rem;
+    color: #fdb813;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.burger {
+    display: none;
+    cursor: pointer;
+}
+
+.burger div {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+.menu-title {
+    text-align: center;
+    margin-top: 80px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.menu-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.menu-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.menu-card:hover {
+    transform: translateY(-5px);
+}
+
+.menu-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.menu-item {
+    margin-bottom: 8px;
+    color: #666;
+}
+
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        background-color: #333;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .burger {
+        display: block;
+    }
+}
+
+
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="#" class="logo">Logo</a>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <div class="burger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <h1 class="menu-title">Menu Card</h1>
+    <div id="menu-container" class="menu-container"></div>
+
+    <script>
+        fetch('menu')
+            .then(response => response.json())
+            .then(data => {
+                const menuContainer = document.getElementById('menu-container');
+                data.forEach(menuItem => {
+                    const menuCard = document.createElement('div');
+                    menuCard.className = 'menu-card';
+                    menuCard.innerHTML = `
+                        <h2>${menuItem.name}</h2>
+                        <p class="menu-item ">Water: ${menuItem.water}</p>
+                        <p class="menu-item">Price: ${menuItem.prize}</p>
+                    `;
+                    menuContainer.appendChild(menuCard);
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+</body>
+</html>
